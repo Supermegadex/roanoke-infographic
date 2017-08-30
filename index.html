@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Roanoke</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' /><script src='//api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js'>
+    </script>
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <div id="top">
+      <h1 id="title">The Lost Colony of Roanoke</h1>
+      <div class="map-wrapper">
+        <div id='map' style='width: 100%; height: 40vh;'></div>
+      </div>
+      <div class="map-wrapper hidden">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/j6X0lMyyV68" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">A title</h2>
+      </div>
+      <div class="card-content">
+        <p class="card-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis posuere erat, nec vehicula erat mollis et. Mauris
+        porta in purus id vehicula. Nam sit amet massa et massa tincidunt tincidunt. Proin luctus, lorem ut malesuada sollicitudin,
+        dolor ex porttitor lorem, eu ultrices quam nunc non risus. In finibus hendrerit condimentum. Cras mattis sem ac orci
+        ultrices semper. Maecenas feugiat, velit ac porttitor tristique, tortor libero cursus massa, eu egestas magna ex
+        sed nunc.</p>
+      </div>
+    </div>
+    <div class="fab" id="nxt-fab">
+      <div id="fab-ripple-1" class="ripple"></div>
+      <div class="dummy"></div>
+      <i class="material-icons fab-icon">&#xE5CC;</i>
+    </div>
+    <script>
+      let fab1 = document.querySelector("#nxt-fab");
+      let ripple1 = document.querySelector("#fab-ripple-1");
+
+      var ro = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-75.6615, 35.8897]
+        }
+      };
+
+      var cr = {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [-75.5393, 35.2480]
+        }
+      };
+
+      var crMidpoint = turf.midpoint(ro, cr);
+
+      let [x1, y1] = crMidpoint.geometry.coordinates;
+      let [x2, y2] = ro.geometry.coordinates;
+      let angle = -10;
+      let m = (y2 - y1) / (x2 - x1);
+      let angle_rad = Math.tan(angle * Math.PI / 180);
+      let new_y = (angle_rad * (x2 - x1)) + y1;
+      let new_x = x1 - (m * (new_y - y1));
+
+      var crLine = {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            ro.geometry.coordinates,
+            [new_x, new_y],
+            cr.geometry.coordinates
+          ]
+        }
+      };
+
+      var curvedCr = turf.bezier(crLine, 10000, 1);
+
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3VwZXJtZWdhZGV4IiwiYSI6ImNqNnc4c242NDFjcG0zMm56MzlqMDk1czMifQ.gFotKrTtsriSfvGxKVzsoA';
+
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/supermegadex/cj6wi3nab93hf2rmzlko6075k',
+        center: [-75.6615, 35.8897],
+        zoom: 9
+      });
+
+      function goToCroatoan() {
+        map.addSource("route", {
+          "type": "geojson",
+          "data": curvedCr
+        });
+
+        map.addLayer({
+          "id": "route",
+          "type": "line",
+          "source": "route",
+          "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+          },
+          "paint": {
+            "line-color": "#333",
+            "line-width": 1
+          }
+        });
+        map.panTo([-75.5393, 35.2480], {duration: 2000});
+      }
+
+      let actions = [
+        goToCroatoan,
+        () => alert("hi"),
+        () => counter--
+      ]
+
+      counter = 0;
+
+      function nxtClick(e) {
+        e = e || window.event;
+
+        actions[counter]();
+        counter++;
+
+        function m62(val) { return val - 37.5 }
+
+        var pageX = e.pageX;
+        var pageY = e.pageY;
+
+        // IE 8
+        if (pageX === undefined) {
+          pageX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+          pageY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+        let top = `${m62(pageY)}px`;
+        let left = `${m62(pageX)}px`;
+        ripple1.style.top = top;
+        ripple1.style.left = left;
+        ripple1.style.animation = "ripple 250ms forwards";
+        setTimeout(() => 
+            ripple1.style.animation = "idle 1ms forwards", 250);
+      }
+
+      fab1.addEventListener("click", nxtClick);
+    </script>
+  </body>
+</html>

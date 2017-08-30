@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #673AB7;
+}
+
+#top {
+  background: teal;
+}
+
+.card {
+  margin: 0 100px 100px 100px;
+  padding: 10px 20px 10px 20px;
+  background: white;
+}
+
+.map-wrapper {
+  padding: 100px 100px 0 100px;
+}
+
+#title {
+  position: absolute;
+  font-family: "Scope One";
+  margin-left: 100px;
+  margin-top: 25px;
+  font-size: 3em;
+  font-weight: bolder;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+.fab {
+  background: #8C9EFF;
+  height: 75px;
+  width: 75px;
+  position: fixed;
+  display: grid;
+  text-align: center;
+  border-radius: 100%;
+  top: calc(40vh + 62.5px);
+  cursor: pointer;
+  right: 62.5px;
+  color: black;
+  box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
+  z-index: 99999;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  35% {
+    opacity: .4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes idle {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 0
+  }
+}
+
+.ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #000;
+  height: 75px;
+  width: 75px;
+  border-radius: 100%;
+  animation: idle 1ms forwards;
+}
+
+.fab-icon {
+  vertical-align: middle;
+}
