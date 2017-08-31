@@ -17,6 +17,28 @@ body {
   transition: 750ms ease-in-out;
 }
 
+#end-card {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  bottom: 0;
+  margin: 100px;
+}
+
+#info-card {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  bottom: 0;
+  margin: 100px;
+}
+
 #map {
   border-radius: 5px 5px 0 0;
   transition: 750ms ease-in-out;
@@ -80,7 +102,13 @@ h2, h3, h4 {
 
 #vid-fab {
   bottom: 12px;
-  left: 100px;
+  right: 100px;
+  transform: scale(1);
+}
+
+#info-fab {
+  bottom: 12px;
+  right: 200px;
   transform: scale(1);
 }
 
@@ -120,6 +148,7 @@ h2, h3, h4 {
     border-radius: 5px;
   }
 }
+
 @keyframes ripple-card-reverse {
   0% {
     opacity: 1;
@@ -132,17 +161,6 @@ h2, h3, h4 {
     border-radius: 1000px;
     display: none;
   }
-}
-
-#end-card {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  border-radius: 5px;
-  bottom: 0;
-  margin: 100px;
 }
 
 @keyframes ripple {

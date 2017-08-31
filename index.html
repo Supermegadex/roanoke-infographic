@@ -37,7 +37,17 @@
       </div>
     </div>
     <div id="end-card" class="card">
-      <video class="video" src="https://r16---sn-q4f7sns6.googlevideo.com/videoplayback?expire=1504160568&source=youtube&ip=2001%3A19f0%3A7402%3A95%3A5400%3Aff%3Afe6a%3Ad50a&signature=338F67FAFF55045C6ABCAC32F15D4EE64E22C33C.66E285236449909928AD767A36D9F00E132CBD52&key=cms1&itag=22&pl=19&ipbits=0&lmt=1470971630163858&ei=2FanWfupI9PdWI2QpuAO&requiressl=yes&dur=146.494&id=o-AAELDLeMd79X1-PS8XNAezGwDibbxcFDjxSmnKlkqubP&ratebypass=yes&mime=video%2Fmp4&sparams=dur,ei,expire,id,ip,ipbits,ipbypass,itag,lmt,mime,mip,mm,mn,ms,mv,nh,pl,ratebypass,requiressl,source&mip=72.206.110.201&redirect_counter=1&cm2rm=sn-bvvbax-hjpeed&req_id=c7f1e4f1f52a3ee&cms_redirect=yes&ipbypass=yes&mm=30&mn=sn-q4f7sns6&ms=nxu&mt=1504138918&mv=m" controls>
+      <video class="video" src="roanoke.mp4" controls></video>
+    </div>
+    <div id="info-card" class="card">
+      <div class="card-inner">
+        <div class="card-content">
+          <h2 class="card-title">More information</h2>
+        </div>
+        <div class="card-content">
+          Wew
+        </div>
+      </div>
     </div>
     <div id="fab-ripple-1" class="ripple">
     </div>
@@ -53,15 +63,22 @@
       <div class="dummy"></div>
       <i class="material-icons fab-icon">&#xE63A;</i>
     </div>
+    <div class="fab" id="info-fab">
+      <div class="dummy"></div>
+      <i class="material-icons">&#xE88F;</i>
+    </div>
     <script>
       let fab1 = document.querySelector("#nxt-fab");
       let fab2 = document.querySelector("#pre-fab");
       let fab3 = document.querySelector("#vid-fab");
+      let fab4 = document.querySelector("#info-fab");
       let ripple1 = document.querySelector("#fab-ripple-1");
       let mapEl = document.querySelector("#map");
       let card = document.querySelector("#main-card");
       let endCard = document.querySelector("#end-card");
+      let infoCard = document.querySelector("#info-card");
       let content = document.querySelector("#main-card .card-inner");
+      let infoContent = document.querySelector("#info-card .card-inner");
       let title = document.querySelector("#main-card .card-title");
       let paragraph = document.querySelector("#main-card .card-paragraph");
       let video = document.querySelector(".video");
@@ -147,7 +164,7 @@
       map.on('load', function() {
         updateFabs();
         console.log("registering keypress")
-        document.addEventListener("keypress", function (e) {
+        document.onkeydown = function (e) {
           console.log(e);
           if (e.keyCode == 39) {
             nxtClick();
@@ -155,7 +172,7 @@
           if (e.keyCode == 37) {
             preClick();
           }
-        }, false);
+        }, false;
       });
 
       function updateFabs() {
@@ -233,6 +250,50 @@
          }, 1000);
       }
 
+      function infoAnim() {
+          inf = true;
+          infoContent.style.display = "none";
+          mapEl.style.transform = "translateY(40vh)";
+          setTimeout(function () {
+            fab1.style.transform = "scale(0)";
+            fab2.style.transform = "scale(0)";
+            card.style.transform = "translateY(-100%)"
+          }, 250);
+          setTimeout(function () {
+            infoCard.style.display = "block";
+            infoCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+            setTimeout(function () {
+              infoContent.style.display = "inline";
+            }, 500);
+          }, 1000);
+        }
+
+      function vidToInfo() {
+        inf = true;
+        video.style.display = "none";
+        infoContent.style.display = "none";
+        endCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
+        infoCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+        infoCard.style.display = "block";
+        fin = false;
+        setTimeout(function() {
+          infoContent.style.display = "block";
+        }, 500);
+      }
+
+      function infoToVid() {
+          inf = false;
+          video.style.display = "none";
+          infoContent.style.display = "none";
+          infoCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
+          endCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+          endCard.style.display = "block";
+          fin = true;
+          setTimeout(function () {
+            video.style.display = "block";
+          }, 500);
+        }
+
       function updateText(ttext, text) {
         content.style.opacity = "0";
         setTimeout(function() {
@@ -256,6 +317,19 @@
             }, 250);
         }, 500);
       }
+
+      function resumeInfo() {
+          inf = false;
+          infoContent.style.display = "none";
+          infoCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
+          setTimeout(function () {
+            card.style.transform = "translateY(0)"
+            updateFabs();
+            setTimeout(function () {
+              mapEl.style.transform = "translateY(0)";
+            }, 250);
+          }, 500);
+        }
 
       let actions = [
         goToEngland,
@@ -308,12 +382,36 @@
 
       function vidClick() {
         rippler();
-        fin ? resumeAnimation() : finishAnim();
+        if (inf) {
+          infoToVid();
+        }
+        else if (!fin) {
+          finishAnim();
+        }
+        else {
+          resumeAnimation();
+        }
+      }
+
+      let inf = false;
+
+      function infClick() {
+        rippler();
+        if (fin) {
+          vidToInfo();
+        }
+        else if (!inf) {
+          infoAnim();
+        }
+        else {
+          resumeInfo();
+        }
       }
 
       fab1.addEventListener("click", nxtClick);
       fab2.addEventListener("click", preClick);
       fab3.addEventListener("click", vidClick);
+      fab4.addEventListener("click", infClick);
     </script>
   </body>
 </html>
