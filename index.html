@@ -4,6 +4,7 @@
     <title>Roanoke</title>
     <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Scope+One" rel="stylesheet">
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' /><script src='//api.tiles.mapbox.com/mapbox.js/plugins/turf/v2.0.0/turf.min.js'>
     </script>
@@ -15,117 +16,264 @@
       <div class="map-wrapper">
         <div id='map' style='width: 100%; height: 40vh;'></div>
       </div>
-      <div class="map-wrapper hidden">
+      <!-- <div class="map-wrapper hidden">
         <iframe width="560" height="315" src="https://www.youtube.com/embed/j6X0lMyyV68" frameborder="0" allowfullscreen></iframe>
+      </div> -->
+    </div>
+    <div id="card-wrapper">
+      <div class="card" id="main-card">
+        <div class="card-inner">
+          <div class="card-header">
+            <h2 class="card-title">A title</h2>
+          </div>
+          <div class="card-content">
+            <p class="card-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis posuere erat, nec vehicula erat mollis et. Mauris
+            porta in purus id vehicula. Nam sit amet massa et massa tincidunt tincidunt. Proin luctus, lorem ut malesuada sollicitudin,
+            dolor ex porttitor lorem, eu ultrices quam nunc non risus. In finibus hendrerit condimentum. Cras mattis sem ac orci
+            ultrices semper. Maecenas feugiat, velit ac porttitor tristique, tortor libero cursus massa, eu egestas magna ex
+            sed nunc.</p>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-header">
-        <h2 class="card-title">A title</h2>
-      </div>
-      <div class="card-content">
-        <p class="card-paragraph">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis posuere erat, nec vehicula erat mollis et. Mauris
-        porta in purus id vehicula. Nam sit amet massa et massa tincidunt tincidunt. Proin luctus, lorem ut malesuada sollicitudin,
-        dolor ex porttitor lorem, eu ultrices quam nunc non risus. In finibus hendrerit condimentum. Cras mattis sem ac orci
-        ultrices semper. Maecenas feugiat, velit ac porttitor tristique, tortor libero cursus massa, eu egestas magna ex
-        sed nunc.</p>
-      </div>
+    <div id="end-card" class="card">
+      <video class="video" src="https://r16---sn-q4f7sns6.googlevideo.com/videoplayback?expire=1504160568&source=youtube&ip=2001%3A19f0%3A7402%3A95%3A5400%3Aff%3Afe6a%3Ad50a&signature=338F67FAFF55045C6ABCAC32F15D4EE64E22C33C.66E285236449909928AD767A36D9F00E132CBD52&key=cms1&itag=22&pl=19&ipbits=0&lmt=1470971630163858&ei=2FanWfupI9PdWI2QpuAO&requiressl=yes&dur=146.494&id=o-AAELDLeMd79X1-PS8XNAezGwDibbxcFDjxSmnKlkqubP&ratebypass=yes&mime=video%2Fmp4&sparams=dur,ei,expire,id,ip,ipbits,ipbypass,itag,lmt,mime,mip,mm,mn,ms,mv,nh,pl,ratebypass,requiressl,source&mip=72.206.110.201&redirect_counter=1&cm2rm=sn-bvvbax-hjpeed&req_id=c7f1e4f1f52a3ee&cms_redirect=yes&ipbypass=yes&mm=30&mn=sn-q4f7sns6&ms=nxu&mt=1504138918&mv=m" controls>
+    </div>
+    <div id="fab-ripple-1" class="ripple">
     </div>
     <div class="fab" id="nxt-fab">
-      <div id="fab-ripple-1" class="ripple"></div>
       <div class="dummy"></div>
       <i class="material-icons fab-icon">&#xE5CC;</i>
     </div>
+    <div class="fab" id="pre-fab">
+      <div class="dummy"></div>
+      <i class="material-icons fab-icon">&#xE5CB;</i>
+    </div>
+    <div class="fab" id="vid-fab">
+      <div class="dummy"></div>
+      <i class="material-icons fab-icon">&#xE63A;</i>
+    </div>
     <script>
       let fab1 = document.querySelector("#nxt-fab");
+      let fab2 = document.querySelector("#pre-fab");
+      let fab3 = document.querySelector("#vid-fab");
       let ripple1 = document.querySelector("#fab-ripple-1");
+      let mapEl = document.querySelector("#map");
+      let card = document.querySelector("#main-card");
+      let endCard = document.querySelector("#end-card");
+      let content = document.querySelector("#main-card .card-inner");
+      let title = document.querySelector("#main-card .card-title");
+      let paragraph = document.querySelector("#main-card .card-paragraph");
+      let video = document.querySelector(".video");
 
-      var ro = {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-75.6615, 35.8897]
-        }
-      };
+      function makeLine(start, end, angle, name) {
+        var ro = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": start
+          }
+        };
 
-      var cr = {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [-75.5393, 35.2480]
-        }
-      };
+        var cr = {
+          "type": "Feature",
+          "geometry": {
+            "type": "Point",
+            "coordinates": end
+          }
+        };
 
-      var crMidpoint = turf.midpoint(ro, cr);
+        var crMidpoint = turf.midpoint(ro, cr);
 
-      let [x1, y1] = crMidpoint.geometry.coordinates;
-      let [x2, y2] = ro.geometry.coordinates;
-      let angle = -10;
-      let m = (y2 - y1) / (x2 - x1);
-      let angle_rad = Math.tan(angle * Math.PI / 180);
-      let new_y = (angle_rad * (x2 - x1)) + y1;
-      let new_x = x1 - (m * (new_y - y1));
+        let [x1, y1] = crMidpoint.geometry.coordinates;
+        let [x2, y2] = ro.geometry.coordinates;
+        let m = (y2 - y1) / (x2 - x1);
+        let angle_rad = Math.tan(angle * Math.PI / 180);
+        let new_y = (angle_rad * (x2 - x1)) + y1;
+        let new_x = x1 - (m * (new_y - y1));
 
-      var crLine = {
-        "type": "Feature",
-        "geometry": {
-          "type": "LineString",
-          "coordinates": [
-            ro.geometry.coordinates,
-            [new_x, new_y],
-            cr.geometry.coordinates
-          ]
-        }
-      };
+        var crLine = {
+          "type": "Feature",
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [
+              ro.geometry.coordinates,
+              [new_x, new_y],
+              cr.geometry.coordinates
+            ]
+          }
+        };
 
-      var curvedCr = turf.bezier(crLine, 10000, 1);
+        var curvedCr = turf.bezier(crLine, 10000, 1);
+        let rand = Math.random();
 
-      mapboxgl.accessToken = 'pk.eyJ1Ijoic3VwZXJtZWdhZGV4IiwiYSI6ImNqNnc4c242NDFjcG0zMm56MzlqMDk1czMifQ.gFotKrTtsriSfvGxKVzsoA';
-
-      var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/supermegadex/cj6wi3nab93hf2rmzlko6075k',
-        center: [-75.6615, 35.8897],
-        zoom: 9
-      });
-
-      function goToCroatoan() {
-        map.addSource("route", {
+        map.addSource("route" + rand, {
           "type": "geojson",
           "data": curvedCr
         });
 
         map.addLayer({
-          "id": "route",
+          "id": name,
           "type": "line",
-          "source": "route",
+          "source": "route" + rand,
           "layout": {
             "line-join": "round",
             "line-cap": "round"
           },
           "paint": {
-            "line-color": "#333",
-            "line-width": 1
+            "line-color": "#FFFF00",
+            "line-width": 2
           }
         });
-        map.panTo([-75.5393, 35.2480], {duration: 2000});
+      }
+
+      let england = [1.1743, 52.3555];
+      let roanoke = [-75.6615, 35.8897];
+      let croatoa = [-75.5393, 35.2480];
+      let virgini = [-76.6949, 35.9957];
+      let sat = "mapbox://styles/supermegadex/cj6z2pxfvbi8k2rqx8e81hgcd";
+      let reg = "mapbox://styles/supermegadex/cj6wi3nab93hf2rmzlko6075k";
+      let MAX = 6;
+
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic3VwZXJtZWdhZGV4IiwiYSI6ImNqNnc4c242NDFjcG0zMm56MzlqMDk1czMifQ.gFotKrTtsriSfvGxKVzsoA';
+
+      var map = new mapboxgl.Map({
+        container: 'map',
+        style: sat,
+        center: england,
+        zoom: 4
+      });
+
+      map.on('load', function() {
+        updateFabs();
+        console.log("registering keypress")
+        document.addEventListener("keypress", function (e) {
+          console.log(e);
+          if (e.keyCode == 39) {
+            nxtClick();
+          }
+          if (e.keyCode == 37) {
+            preClick();
+          }
+        }, false);
+      });
+
+      function updateFabs() {
+        if (counter < 1) {
+          fab2.style.transform = "scale(0)";
+        }
+        else {
+          fab2.style.transform = "scale(1)";
+        }
+        if (counter > 6) {
+          fab1.style.transform = "scale(0)";
+        }
+        else {
+          fab1.style.transform = "scale(1)";
+        }
+      }
+
+      function fly(center, zoom, speed) {
+        map.flyTo({
+          center: center,
+          zoom: zoom,
+          bearing: 0,
+          speed: speed,
+          curve: 1,
+          easing: (t) => {
+            return t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+          }
+        });
+      }
+
+      function goToCroatoan() {
+        map.setLayoutProperty("roline", 'visibility', 'none');
+        makeLine(roanoke, croatoa, -10, "crline");
+        // map.panTo(croatoa, {duration: 2000});
+        fly(croatoa, 9, .2);
+      }
+
+      function goBack() {
+        fly(roanoke, 9, .6);
+      }
+
+      function goToRoanoke() {
+        makeLine(england, roanoke, -5, "roline");
+        fly(roanoke, 9, .5);
+      }
+
+      function goToVa() {
+        map.setLayoutProperty("crline", 'visibility', 'none');
+        makeLine(roanoke, virgini, 2, "valine");
+        fly(virgini, 11, .5)
+      }
+
+      function goToEngland() {
+        makeLine(england, roanoke, -5, "roline");
+        fly(england, 4, .5);
+      }
+
+      var fin = false;
+
+      function finishAnim() {
+        fin = true;
+        video.style.display = "none";
+        mapEl.style.transform = "translateY(40vh)";
+        setTimeout(function() {
+          fab1.style.transform = "scale(0)";
+          fab2.style.transform = "scale(0)";
+          card.style.transform = "translateY(-100%)"
+         }, 250);
+         setTimeout(function() {
+          endCard.style.display = "block";
+          endCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+          setTimeout(function() {
+            video.style.display = "inline";
+          }, 500);
+         }, 1000);
+      }
+
+      function updateText(ttext, text) {
+        content.style.opacity = "0";
+        setTimeout(function() {
+          title.innerHTML = ttext;
+          setTimeout(function () {
+              paragraph.innerHTML = text;
+              content.style.opacity = "1";
+            }, 100);
+        }, 500);
+      }
+
+      function resumeAnimation() {
+        fin = false;
+        video.style.display = "none";
+        endCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
+        setTimeout(function () {
+            card.style.transform = "translateY(0)"
+            updateFabs();
+            setTimeout(function () {
+              mapEl.style.transform = "translateY(0)";
+            }, 250);
+        }, 500);
       }
 
       let actions = [
+        goToEngland,
+        goToRoanoke,
         goToCroatoan,
-        () => alert("hi"),
-        () => counter--
+        goBack,
+        goToVa,
+        goBack,
+        finishAnim,
+        resumeAnimation
       ]
 
       counter = 0;
 
-      function nxtClick(e) {
+      function rippler(e) {
         e = e || window.event;
 
-        actions[counter]();
-        counter++;
-
-        function m62(val) { return val - 37.5 }
+        function m62(val) { return val - 50 }
 
         var pageX = e.pageX;
         var pageY = e.pageY;
@@ -144,7 +292,28 @@
             ripple1.style.animation = "idle 1ms forwards", 250);
       }
 
+      function nxtClick() {
+        counter++;
+        updateFabs();
+        actions[counter]();
+        rippler();
+      }
+
+      function preClick() {
+        counter--;
+        updateFabs();
+        actions[counter]();
+        rippler();
+      }
+
+      function vidClick() {
+        rippler();
+        fin ? resumeAnimation() : finishAnim();
+      }
+
       fab1.addEventListener("click", nxtClick);
+      fab2.addEventListener("click", preClick);
+      fab3.addEventListener("click", vidClick);
     </script>
   </body>
 </html>

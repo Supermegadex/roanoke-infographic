@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   background: #673AB7;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif
 }
 
 #top {
@@ -10,17 +11,45 @@ body {
 
 .card {
   margin: 0 100px 100px 100px;
-  padding: 10px 20px 10px 20px;
+  /* padding: 10px 20px 10px 20px; */
   background: white;
+  border-radius: 0 0 5px 5px;
+  transition: 750ms ease-in-out;
+}
+
+#map {
+  border-radius: 5px 5px 0 0;
+  transition: 750ms ease-in-out;
+}
+
+.card-header {
+  padding: 20px 30px 0 30px;
+}
+
+.card-inner {
+  overflow-x: hidden;
+}
+
+#main-card .card-inner {
+  transition: 500ms;
+}
+
+.card-content {
+  padding: 0 30px 20px 30px;
 }
 
 .map-wrapper {
   padding: 100px 100px 0 100px;
+  overflow: hidden;
+}
+
+h2, h3, h4 {
+  font-family: "Scope One", Arial, Helvetica, sans-serif;
 }
 
 #title {
   position: absolute;
-  font-family: "Scope One";
+  font-family: "Scope One", Arial, Helvetica, sans-serif;
   margin-left: 100px;
   margin-top: 25px;
   font-size: 3em;
@@ -28,8 +57,35 @@ body {
   color: white;
 }
 
+.video {
+  width: 100%;
+  height: 100%;
+}
+
 .hidden {
   display: none;
+}
+
+#nxt-fab {
+  top: calc(40vh + 62.5px);
+  right: 12px;
+  transition: 250ms ease-in-out;
+}
+
+#pre-fab {
+  top: calc(40vh + 62.5px);
+  left: 12px;
+  transition: 250ms ease-in-out;
+}
+
+#vid-fab {
+  bottom: 12px;
+  left: 100px;
+  transform: scale(1);
+}
+
+#card-wrapper {
+  overflow: hidden;
 }
 
 .fab {
@@ -40,12 +96,53 @@ body {
   display: grid;
   text-align: center;
   border-radius: 100%;
-  top: calc(40vh + 62.5px);
   cursor: pointer;
-  right: 62.5px;
   color: black;
   box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
   z-index: 99999;
+  transition: 250ms ease-in-out;
+  transform: scale(0);
+}
+
+.fab:active {
+  box-shadow: 0px 5px 10px 1px rgba(0,0,0,.20), 0px 5px 10px 0 rgba(0,0,0,.18), 0 3px 6px -2px rgba(0,0,0,.25);
+}
+
+@keyframes ripple-card {
+  0% {
+    opacity: .3;
+    transform: scale(0);
+    border-radius: 1000px;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 5px;
+  }
+}
+@keyframes ripple-card-reverse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 5px;
+  }
+  100% {
+    opacity: .3;
+    transform: scale(0);
+    border-radius: 1000px;
+    display: none;
+  }
+}
+
+#end-card {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  bottom: 0;
+  margin: 100px;
 }
 
 @keyframes ripple {
@@ -75,9 +172,9 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  background: #000;
-  height: 75px;
-  width: 75px;
+  background: #fff;
+  height: 100px;
+  width: 100px;
   border-radius: 100%;
   animation: idle 1ms forwards;
 }
