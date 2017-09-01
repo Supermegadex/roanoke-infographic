@@ -88,6 +88,22 @@ h2, h3, h4 {
   display: none;
 }
 
+.fab {
+  background: #8C9EFF;
+  height: 75px;
+  width: 75px;
+  position: absolute;
+  display: grid;
+  text-align: center;
+  border-radius: 100%;
+  cursor: pointer;
+  color: black;
+  box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
+  z-index: 99999;
+  transition: 250ms ease-in-out;
+  transform: scale(0);
+}
+
 #nxt-fab {
   top: calc(40vh + 62.5px);
   right: 12px;
@@ -101,12 +117,14 @@ h2, h3, h4 {
 }
 
 #vid-fab {
+  position: fixed;
   bottom: 12px;
   right: 100px;
   transform: scale(1);
 }
 
 #info-fab {
+  position: fixed;
   bottom: 12px;
   right: 200px;
   transform: scale(1);
@@ -114,22 +132,6 @@ h2, h3, h4 {
 
 #card-wrapper {
   overflow: hidden;
-}
-
-.fab {
-  background: #8C9EFF;
-  height: 75px;
-  width: 75px;
-  position: fixed;
-  display: grid;
-  text-align: center;
-  border-radius: 100%;
-  cursor: pointer;
-  color: black;
-  box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
-  z-index: 99999;
-  transition: 250ms ease-in-out;
-  transform: scale(0);
 }
 
 .fab:active {
@@ -180,6 +182,10 @@ h2, h3, h4 {
   to {
     opacity: 0
   }
+}
+
+.image {
+  width: 100%;
 }
 
 .ripple {
