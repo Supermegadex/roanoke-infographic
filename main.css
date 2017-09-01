@@ -138,12 +138,10 @@ h2, h3, h4 {
 
 @keyframes ripple-card {
   0% {
-    opacity: .3;
     transform: scale(0);
     border-radius: 1000px;
   }
   100% {
-    opacity: 1;
     transform: scale(1);
     border-radius: 5px;
   }
@@ -151,12 +149,10 @@ h2, h3, h4 {
 
 @keyframes ripple-card-reverse {
   0% {
-    opacity: 1;
     transform: scale(1);
     border-radius: 5px;
   }
   100% {
-    opacity: .3;
     transform: scale(0);
     border-radius: 1000px;
     display: none;

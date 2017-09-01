@@ -273,11 +273,13 @@
         video.style.display = "none";
         infoContent.style.display = "none";
         endCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
-        infoCard.style.animation = "ripple-card 500ms ease-in-out forwards";
-        infoCard.style.display = "block";
         fin = false;
         setTimeout(function() {
-          infoContent.style.display = "block";
+          infoCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+          infoCard.style.display = "block";
+          setTimeout(function () {
+            infoContent.style.display = "block";
+          }, 500);
         }, 500);
       }
 
@@ -286,11 +288,13 @@
           video.style.display = "none";
           infoContent.style.display = "none";
           infoCard.style.animation = "ripple-card-reverse 500ms ease-in-out forwards";
-          endCard.style.animation = "ripple-card 500ms ease-in-out forwards";
-          endCard.style.display = "block";
           fin = true;
           setTimeout(function () {
-            video.style.display = "block";
+            endCard.style.animation = "ripple-card 500ms ease-in-out forwards";
+            endCard.style.display = "block";
+            setTimeout(function () {
+              video.style.display = "block";
+            }, 500);
           }, 500);
         }
 
